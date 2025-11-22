@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+    id 'war'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Servlet API (provided by Undertow in launcher)
+    compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
+}
+
+war {
+    archiveFileName = 'wallet.war'
+    manifest {
+        attributes(
+            'Application': 'wallet.Application'
+        )
+    }
+}
+
