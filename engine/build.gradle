@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-    // Servlet API (provided by Undertow in launcher)
+    // Servlet API in launcher already so dont need deps
     compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
 }
 
