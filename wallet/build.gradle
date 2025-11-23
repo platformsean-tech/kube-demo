@@ -20,6 +20,7 @@ dependencies {
 
 war {
     archiveFileName = 'wallet.war'
+    from 'src/main/webapp'
     manifest {
         attributes(
             'Application': 'wallet.Application'

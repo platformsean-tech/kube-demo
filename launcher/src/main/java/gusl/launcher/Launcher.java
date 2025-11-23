@@ -306,6 +306,8 @@ public class Launcher {
                             .setCaseSensitive(false)
                             .setSafePaths(null)
                             .build());
+            
+            
 
             addWebSockets(servletBuilder, details, worker);
 

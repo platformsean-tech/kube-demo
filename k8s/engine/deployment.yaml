@@ -6,7 +6,7 @@ metadata:
   labels:
     app: engine
 spec:
-  replicas: 1
+  replicas: 5
   selector:
     matchLabels:
       app: engine
@@ -29,9 +29,9 @@ spec:
           value: "0.0.0.0"
         resources:
           requests:
-            memory: "256Mi"
+            memory: "100Mi"
             cpu: "100m"
           limits:
-            memory: "512Mi"
+            memory: "112Mi"
             cpu: "500m"
 

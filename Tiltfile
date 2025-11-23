@@ -8,9 +8,23 @@ k8s_yaml([
     'k8s/wallet/service.yaml',
     'k8s/engine/deployment.yaml',
     'k8s/engine/service.yaml',
+    'k8s/bonus/deployment.yaml',
+    'k8s/bonus/service.yaml',
 ])
 
-# WALLET
+#LAUNCHER
+docker_build(
+    'ghcr.io/platformsean-tech/launcher:latest',
+    context='./launcher',
+    dockerfile='./launcher/Dockerfile',
+    ignore=[
+        'launcher/build/',
+        'launcher/.gradle/',
+        'launcher/gradle/wrapper/gradle-wrapper.jar',
+    ],
+)
+
+#WALLET
 docker_build(
     'wallet:latest',
     context='./wallet',
@@ -32,7 +46,7 @@ k8s_resource(
 
 )
 
-# ENGINE
+#ENGINE
 docker_build(
     'engine:latest',
     context='./engine',
@@ -52,4 +66,17 @@ k8s_resource(
     labels=['engine'],
     port_forwards='8082:8080',
 
+)
+
+#BONUS
+docker_build(
+    'bonus:latest',
+    context='./bonus',
+    dockerfile='./bonus/Dockerfile',
+)
+
+k8s_resource(
+    'bonus',
+    labels=['bonus'],
+    port_forwards='8083:8080',
 )
