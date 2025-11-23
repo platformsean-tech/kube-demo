@@ -1,9 +1,7 @@
-# Tiltfile for kube-demo development
 
-# Load namespace first to ensure it exists
 k8s_yaml('k8s/namespace.yaml')
 
-# Load Kubernetes manifests
+#
 k8s_yaml([
     'k8s/wallet/deployment.yaml',
     'k8s/wallet/service.yaml',
@@ -11,10 +9,8 @@ k8s_yaml([
     'k8s/engine/service.yaml',
 ])
 
-# Note: launcher:latest will be pulled from Docker Hub
-# Wallet and engine Dockerfiles use FROM launcher:latest
 
-# Wallet service - rebuilds on source changes
+#rebuilds on source changes
 docker_build(
     'wallet:latest',
     './wallet',

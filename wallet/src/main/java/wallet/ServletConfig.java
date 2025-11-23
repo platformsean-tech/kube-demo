@@ -12,7 +12,7 @@ public class ServletConfig implements ServletContextListener {
         try {
             sce.getServletContext().addServlet("ApiServlet", ApiServlet.class)
                 .addMapping("/api");
-            System.out.println("ApiServlet registered programmatically");
+            System.out.println("Servelet Registered....");
         } catch (Exception e) {
             System.err.println("Failed to register servlet: " + e.getMessage());
             e.printStackTrace();
