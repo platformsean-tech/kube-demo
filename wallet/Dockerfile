@@ -15,7 +15,7 @@ COPY src ./src
 
 RUN ./gradlew war --no-daemon
 
-FROM platformsean/launcher:latest
+FROM ghcr.io/platform-sean/launcher:latest
 
 COPY --from=build /build/build/libs/wallet.war /app/
 
