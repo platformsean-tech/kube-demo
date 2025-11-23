@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'launcher/**'
+      - '.github/workflows/launcher-build.yml'
 
 env:
   IMAGE_NAME: launcher
