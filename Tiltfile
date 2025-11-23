@@ -1,7 +1,8 @@
+default_registry('ttl.sh/sean-tilt')
 
+allow_k8s_contexts('default')  
 k8s_yaml('k8s/namespace.yaml')
 
-#
 k8s_yaml([
     'k8s/wallet/deployment.yaml',
     'k8s/wallet/service.yaml',
@@ -9,39 +10,46 @@ k8s_yaml([
     'k8s/engine/service.yaml',
 ])
 
-
-#rebuilds on source changes
+# WALLET
 docker_build(
     'wallet:latest',
-    './wallet',
+    context='./wallet',
     dockerfile='./wallet/Dockerfile',
     ignore=[
         'wallet/build/',
         'wallet/.gradle/',
         'wallet/gradle/wrapper/gradle-wrapper.jar',
     ],
+    live_update=[
+        sync('./wallet/build/libs/wallet.war', '/app/wallet.war'),
+    ],
 )
 
 k8s_resource(
     'wallet',
     labels=['wallet'],
-    port_forwards=8081,
+    port_forwards='8081:8080',
+
 )
 
-# Engine service - rebuilds on source changes
+# ENGINE
 docker_build(
     'engine:latest',
-    './engine',
+    context='./engine',
     dockerfile='./engine/Dockerfile',
     ignore=[
         'engine/build/',
         'engine/.gradle/',
         'engine/gradle/wrapper/gradle-wrapper.jar',
     ],
+    live_update=[
+        sync('./engine/build/libs/engine.war', '/app/engine.war'),
+    ],
 )
 
 k8s_resource(
     'engine',
     labels=['engine'],
-    port_forwards=8082,
+    port_forwards='8082:8080',
+
 )

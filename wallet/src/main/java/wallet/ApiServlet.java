@@ -1,54 +1,42 @@
 package wallet;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+@WebServlet(urlPatterns = {"/api", "/api/*"})
 public class ApiServlet extends HttpServlet {
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/plain");
-        response.setCharacterEncoding("UTF-8");
         
-        String path = extractPath(request);
-        String result = route(path);
-        
-        if (result == null) {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            result = "Not found: /" + path;
-        }
-        
-        PrintWriter out = response.getWriter();
-        out.print(result);
-        out.flush();
-    }
-    
-    private String extractPath(HttpServletRequest request) {
         String pathInfo = request.getPathInfo();
-        if (pathInfo == null || pathInfo.equals("/")) {
-            return "";
-        }
-        // Remove leading slash
-        return pathInfo.startsWith("/") ? pathInfo.substring(1) : pathInfo;
-    }
-    
-    private String route(String path) {
+        String path = (pathInfo == null || pathInfo.equals("/")) ? "" : pathInfo.substring(1);
+        
+        String result;
         switch (path) {
             case "":
             case "api":
-                return "Hello from -> wallet";
+                result = "api from -> wallet";
+                break;
             case "hello":
-                return "Hello from -> wallet";
+                result = "Hello from -> wallet";
+                break;
             case "goodbye":
-                return "Goodbye from -> wallet";
+                result = "Goodbye from -> wallet";
+                break;
             default:
-                return null;
+                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                result = "Not found: /" + path;
         }
+        
+        response.getWriter().print(result);
     }
 }
 
