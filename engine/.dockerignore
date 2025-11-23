@@ -14,8 +14,7 @@ WEB-INF/
 .git/
 .gitignore
 
-# Gradle
-gradlew
+# Gradle (keep gradlew and gradle wrapper for Docker build)
 gradlew.bat
 .gradle/
 
