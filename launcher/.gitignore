@@ -10,7 +10,6 @@ build/
 
 # Compiled Java class files
 *.class
-*.war
 
 # Compiled Python bytecode
 *.py[cod]
@@ -18,8 +17,6 @@ build/
 # Log files
 *.log
 
-# Package files
-*.jar
 
 # Maven
 target/
