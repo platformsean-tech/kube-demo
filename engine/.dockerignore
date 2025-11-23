@@ -1,0 +1,30 @@
+# Build artifacts
+build/
+bin/
+.gradle/
+META-INF/
+WEB-INF/
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# Git
+.git/
+.gitignore
+
+# Gradle
+gradlew
+gradlew.bat
+.gradle/
+
+# Reports
+*.html
+*.xml
+reports/
+
+# Temporary files
+*.tmp
+*.log
+
