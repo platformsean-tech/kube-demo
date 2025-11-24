@@ -7,7 +7,7 @@ app = Flask(__name__)
 @app.route('/api', methods=['GET'])
 def api():
     return jsonify({
-        "message": "Hello from -> bonus",
+        "message": "Hello from -> bonus01",
         "service": "bonus"
     })
 

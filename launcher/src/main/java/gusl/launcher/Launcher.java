@@ -26,6 +26,8 @@ import org.xnio.OptionMap;
 import org.xnio.Xnio;
 import org.xnio.XnioWorker;
 
+import javax.servlet.Servlet;
+import javax.servlet.annotation.WebServlet;
 import javax.websocket.server.ServerEndpoint;
 import java.io.File;
 import java.io.IOException;
@@ -306,8 +308,10 @@ public class Launcher {
                             .setCaseSensitive(false)
                             .setSafePaths(null)
                             .build());
-            
-            
+
+            // Scan for and register @WebServlet annotated classes
+            //Hack to get the servlets registered
+            registerServlets(servletBuilder, details);
 
             addWebSockets(servletBuilder, details, worker);
 
@@ -361,6 +365,57 @@ public class Launcher {
             }
         }
 
+    }
+
+    private void registerServlets(final DeploymentInfo servletBuilder, WarDetails details) {
+        try {
+            // Scan for @WebServlet annotated classes in common packages
+            String[] packages = {"", "engine", "wallet"};
+            Set<Class<?>> servletClasses = new java.util.HashSet<>();
+            
+            for (String pkg : packages) {
+                try {
+                    Set<Class<?>> found = scanForClasses(details.getClassLoader(), pkg, WebServlet.class);
+                    servletClasses.addAll(found);
+                } catch (Exception e) {
+                    // Package might not exist, continue
+                }
+            }
+            
+            // Register each servlet found
+            for (Class<?> servletClass : servletClasses) {
+                // Ensure it's actually a Servlet subclass
+                if (!Servlet.class.isAssignableFrom(servletClass)) {
+                    continue;
+                }
+                
+                WebServlet annotation = servletClass.getAnnotation(WebServlet.class);
+                if (annotation != null) {
+                    String[] urlPatterns = annotation.urlPatterns();
+                    if (urlPatterns.length == 0) {
+                        urlPatterns = annotation.value();
+                    }
+                    if (urlPatterns.length > 0) {
+                        String servletName = annotation.name();
+                        if (servletName.isEmpty()) {
+                            servletName = servletClass.getSimpleName();
+                        }
+                        
+                        @SuppressWarnings("unchecked")
+                        Class<? extends Servlet> servletType = (Class<? extends Servlet>) servletClass;
+                        io.undertow.servlet.api.ServletInfo servletInfo = Servlets.servlet(servletName, servletType);
+                        for (String pattern : urlPatterns) {
+                            servletInfo.addMapping(pattern);
+                        }
+                        servletBuilder.addServlet(servletInfo);
+                        System.out.println("Registered servlet: " + servletClass.getName() + " with patterns: " + java.util.Arrays.toString(urlPatterns));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error registering servlets: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void addWebSockets(final DeploymentInfo servletBuilder, WarDetails details, XnioWorker worker) {

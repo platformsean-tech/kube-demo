@@ -2,51 +2,7 @@
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
                        http://maven.apache.org/xsd/settings-1.0.0.xsd">
-    <!-- <localRepository>target/auth-repository</localRepository> -->
- 
-    <servers>
-        <server>
-            <id>uk-nexus</id>
-            <username>gradle</username>
-            <password>0Iw5Kr5Dw0Rl</password>
-        </server>
-    </servers>
 
-    <repositories>
-        <!-- Turn off maven central -->
-        <repository>
-            <id>central</id>
-            <url>https://repo1.maven.org/maven2</url>
-            <releases>
-                <enabled>false</enabled>
-                <updatePolicy>never</updatePolicy>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-                <updatePolicy>never</updatePolicy>
-            </snapshots>
-        </repository> 
-    </repositories>
-    
-    <profiles>    
-        <profile>
-            <id>auth-repository</id>
-            <repositories>
-                <repository>
-                    <id>uk-nexus</id>
-                    <name>UK Nexus</name>
-                    <url>http://nexus.example.com:8081/repository/maven-releases/</url>
-                    <layout>default</layout>
-                    <releases>
-                        <enabled>true</enabled>
-                        <updatePolicy>never</updatePolicy>
-                        <checksumPolicy>ignore</checksumPolicy>
-                    </releases>
-                </repository>
-            </repositories>
-        </profile>
-    </profiles>
- 
     <activeProfiles>
         <activeProfile>auth-repository</activeProfile>
     </activeProfiles>
