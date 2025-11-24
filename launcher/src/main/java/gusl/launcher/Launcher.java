@@ -378,13 +378,13 @@ public class Launcher {
                     Set<Class<?>> found = scanForClasses(details.getClassLoader(), pkg, WebServlet.class);
                     servletClasses.addAll(found);
                 } catch (Exception e) {
-                    // Package might not exist, continue
+                    // Package might not there or failed to cechk fo it 
                 }
             }
             
             // Register each servlet found
             for (Class<?> servletClass : servletClasses) {
-                // Ensure it's actually a Servlet subclass
+                // Can we assign it is it a Servlet subclass? 
                 if (!Servlet.class.isAssignableFrom(servletClass)) {
                     continue;
                 }
@@ -403,12 +403,13 @@ public class Launcher {
                         
                         @SuppressWarnings("unchecked")
                         Class<? extends Servlet> servletType = (Class<? extends Servlet>) servletClass;
+                        
                         io.undertow.servlet.api.ServletInfo servletInfo = Servlets.servlet(servletName, servletType);
                         for (String pattern : urlPatterns) {
                             servletInfo.addMapping(pattern);
                         }
                         servletBuilder.addServlet(servletInfo);
-                        System.out.println("Registered servlet: " + servletClass.getName() + " with patterns: " + java.util.Arrays.toString(urlPatterns));
+                        System.out.println("Registered servlet: " + servletClass.getName() + " with : " + java.util.Arrays.toString(urlPatterns));
                     }
                 }
             }
